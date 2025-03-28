@@ -1,0 +1,64 @@
+{% extends 'counselor/counselor_base.html' %}
+{% block coun_content %}
+    <div class="section-header">
+        <h1>View Students</h1>
+    </div>
+    
+    <div class="filter-container">
+        <div class="filter-group">
+            <label for="student-interest">Interest:</label>
+            <select id="student-interest" class="filter-select">
+                <option value="all">All Interests</option>
+                <option value="technology">Technology</option>
+                <option value="business">Business</option>
+                <option value="healthcare">Healthcare</option>
+                <option value="education">Education</option>
+                <option value="arts">Arts & Design</option>
+            </select>
+        </div>
+        
+        <div class="filter-group">
+            <label for="student-search">Search:</label>
+            <div class="search-input">
+                <input type="text" id="student-search" placeholder="Search by name or email">
+                <i class="fas fa-search"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="students-grid">
+        {% for student in students %}
+        <div class="student-card">
+            <div class="student-header">
+                <img src="https://via.placeholder.com/80" alt="{{ student.name }}" class="student-avatar">
+                <div class="student-info">
+                    <h3>{{ student.name }}</h3>
+                    <p>{{ student.interests }}</p>
+                </div>
+            </div>
+            <div class="student-details">
+                <div class="detail-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>{{ student.email }}</span>
+                </div>
+                <div class="detail-item">
+                    <i class="fas fa-phone"></i>
+                    <span>{{ student.contact_number }}</span>
+                </div>
+                <div class="detail-item">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>3 Sessions</span>
+                </div>
+            </div>
+            <div class="student-actions">
+                <!-- Add any action buttons here -->
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    </div>
+{% endblock %}
+
+<!-- <a href="{{ url_for('get_messages', student_id=student.id) }}" class="btn-primary message">Message</a>
+                    <a href="{{ url_for('get_messages', student_id=student.id) }}" class="btn-primary message">Message</a> -->

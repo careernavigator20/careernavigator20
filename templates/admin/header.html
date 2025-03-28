@@ -1,0 +1,46 @@
+<header class="header">
+    <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search...">
+    </div>
+    <div class="header-right">
+        <!-- <button class="theme-toggle">
+            <i class="fas fa-sun"></i>
+        </button> -->
+        <div class="notifications">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge" id="notification-badge" style="display: none;">0</span>
+        </div>
+        <div class="profile-dropdown">
+            <img src="https://ui-avatars.com/api/?name=Mihir+Sudani" alt="Profile" class="profile-image">
+            <div class="profile-info">
+                <span class="profile-name">Admin User</span>
+                <span class="profile-role">Super Admin</span>
+            </div>
+        </div>
+    </div>
+    <script>
+        function fetchNotifications(){
+            fetch('/get_notifications')
+            .then((resp)=>resp.json())
+            .then((data)=>{
+                const notificationBadge = document.getElementById('notification-badge');
+                if(data.count > 0){
+                    notificationBadge.textContent = data.count;
+                    notificationBadge.style.display = 'inline-block';
+                }
+                else{
+                    notificationBadge.style.display = 'none';
+                }
+            })
+            .catch((err)=>{
+                console.log(err);  
+            })
+        }
+
+        document.addEventListener('DOMContentLoaded',function(){
+            fetchNotifications();
+            setInterval(fetchNotifications,60000);
+        })
+    </script>
+</header>

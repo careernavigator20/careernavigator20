@@ -1,0 +1,58 @@
+{% extends 'student/stud-base.html' %}
+{% block title %}Find Counselors{% endblock %}
+{% block content %}
+<div class="search-filters">
+    <div class="search-box">
+        <input type="text" placeholder="Search counselors...">
+        <i class="fas fa-search"></i>
+    </div>
+    <div class="filters">
+        <select class="filter-select">
+            <option value="">Career Field</option>
+            <option value="technology">Technology</option>
+            <option value="business">Business</option>
+            <option value="healthcare">Healthcare</option>
+        </select>
+        <select class="filter-select">
+            <option value="">Language</option>
+            <option value="english">English</option>
+            <option value="spanish">Spanish</option>
+            <option value="french">French</option>
+        </select>
+        <select class="filter-select">
+            <option value="">Availability</option>
+            <option value="today">Today</option>
+            <option value="this-week">This Week</option>
+            <option value="next-week">Next Week</option>
+        </select>
+    </div>
+</div>
+
+<div class="find-counselors-grid">
+    {% for counselor in counselors %}
+    <div class="find-counselor-card">
+        <img src="{{ counselor.profile_picture }}" alt="Dr. Sarah Smith">
+        <div class="find-counselor-info">
+            <h3>{{ counselor.full_name }}</h3>
+            <p class="find-specialization">{{ counselor.specialization }} Specialist</p>
+            <div class="find-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+                <span>4.5 (128 reviews)</span>
+            </div>
+            <div class="find-availability">
+                <i class="fas fa-calendar-check"></i>
+                <span>Available Today</span>
+            </div>
+            <div class="find-counselor-actions">
+                <a href="/schedule?counselor_id={{ counselor.id }}" class="find-btn find-btn-primary">Book Appointment</a>
+                <button class="find-btn find-btn-outline">View Profile</button>
+            </div>
+        </div>
+    </div>        
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends 'admin/base.html' %}
+{% block title %}Manage Counselor - Admin Panel{% endblock %}
+{% block content %}
+    <h2 class="section-title">Manage Appointments</h2>
+
+    <div class="table-actions">
+        <div class="search-filters">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search appointments...">
+            </div>
+            <select class="filter-select">
+                <option value="">All Status</option>
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+                <option value="completed">Completed</option>
+            </select>
+            <select class="filter-select">
+                <option value="">Date Range</option>
+                <option value="today">Today</option>
+                <option value="week">This Week</option>
+                <option value="month">This Month</option>
+            </select>
+        </div>
+    </div>
+
+
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Counselor</th>
+                    <th>Date/Time</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="user-info">
+                            <img src="https://ui-avatars.com/api/?name=John+Doe" alt="John Doe">
+                            <span>John Doe</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="user-info">
+                            <img src="https://ui-avatars.com/api/?name=Dr.+Smith" alt="Dr. Smith">
+                            <span>Dr. Smith</span>
+                        </div>
+                    </td>
+                    <td>Feb 25, 2024 - 10:00 AM</td>
+                    <td><span class="status-badge pending">Pending</span></td>
+                    <td>
+                        <div class="appointment-actions">
+                            <button class="approve-btn"><i class="fas fa-check"></i> Approve</button>
+                            <button class="reject-btn"><i class="fas fa-times"></i> Reject</button>
+                            <button class="reschedule-btn" data-modal="rescheduleModal"><i class="fas fa-calendar-alt"></i></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="user-info">
+                            <img src="https://ui-avatars.com/api/?name=Jane+Smith" alt="Jane Smith">
+                            <span>Jane Smith</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="user-info">
+                            <img src="https://ui-avatars.com/api/?name=Dr.+Johnson" alt="Dr. Johnson">
+                            <span>Dr. Johnson</span>
+                        </div>
+                    </td>
+                    <td>Feb 26, 2024 - 2:30 PM</td>
+                    <td><span class="status-badge approved">Approved</span></td>
+                    <td>
+                        <div class="appointment-actions">
+                            <button class="reschedule-btn" data-modal="rescheduleModal"><i class="fas fa-calendar-alt"></i></button>
+                            <button class="cancel-button"><i class="fas fa-ban"></i> Cancel</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="user-info">
+                            <img src="https://ui-avatars.com/api/?name=Mike+Johnson" alt="Mike Johnson">
+                            <span>Mike Johnson</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="user-info">
+                            <img src="https://ui-avatars.com/api/?name=Dr.+Williams" alt="Dr. Williams">
+                            <span>Dr. Williams</span>
+                        </div>
+                    </td>
+                    <td>Feb 24, 2024 - 11:00 AM</td>
+                    <td><span class="status-badge completed">Completed</span></td>
+                    <td>
+                        <div class="appointment-actions">
+                            <button class="view-btn"><i class="fas fa-eye"></i> View</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends 'student/stud-base.html' %}
+{% block title %}Student Dashboard{% endblock %}
+{% block content %}
+<div class="feedback-container">
+    <form id="feedbackForm" class="feedback-form" method="POST" action="{{ url_for('feedback') }}">
+        <div class="form-group">
+            <label>Select Counselor</label>
+            <select name="counselor" required>
+                <option value="">Choose a counselor</option>
+                {% for counselor in counselors %}
+                <option value="{{ counselor.id }}">{{ counselor.full_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Rating</label>
+            <div class="star-rating" id="starRating">
+                <i class="fas fa-star" data-value="1"></i>
+                <i class="fas fa-star" data-value="2"></i>
+                <i class="fas fa-star" data-value="3"></i>
+                <i class="fas fa-star" data-value="4"></i>
+                <i class="fas fa-star" data-value="5"></i>
+            </div>
+            <input type="hidden" name="rating" id="ratingInput" required>
+        </div>
+        <div class="form-group">
+            <label>Your Feedback</label>
+            <textarea name="feedback" required placeholder="Share your experience..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-submit-feedback">Submit Feedback</button>
+    </form>
+</div>
+
+<div id="successModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); z-index: 9999; justify-content: center; align-items: center;">
+    <div style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); text-align: center; width: 300px;">
+        <h3 style="color: #4CAF50; margin-bottom: 10px;">Success</h3>
+        <p style="margin-bottom: 20px;">Your feedback is submitted successfully!</p>
+        <button id="closeModalBtn" style="background-color: #4f46e5; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">OK</button>
+    </div>
+</div>
+
+<script>
+   document.addEventListener('DOMContentLoaded', () => {
+    const stars = document.querySelectorAll('.star-rating .fa-star');
+    const ratingInput = document.getElementById('ratingInput');
+    const feedbackForm = document.getElementById('feedbackForm');
+    const successModal = document.getElementById('successModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+
+    stars.forEach(star => {
+        star.addEventListener('click', () => {
+            const rating = star.getAttribute('data-value');
+            ratingInput.value = rating;
+            stars.forEach(s => {
+                if (s.getAttribute('data-value') <= rating) {
+                    s.classList.add('active');
+                } else {
+                    s.classList.remove('active');
+                }
+            });
+        });
+    });
+
+    feedbackForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const counselorId = feedbackForm.querySelector('select[name="counselor"]').value;
+        const rating = feedbackForm.querySelector('input[name="rating"]').value;
+        const feedbackText = feedbackForm.querySelector('textarea[name="feedback"]').value;
+
+        if (!counselorId || !rating || !feedbackText) {
+            alert('Please fill out all fields before submitting!');
+            return;
+        }
+
+        try {
+            const response = await fetch('/feedback', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    couselor_id: counselorId,
+                    rating: rating,
+                    feedback_text: feedbackText,
+                }),
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                successModal.style.display = 'flex'; // Show the modal
+                feedbackForm.reset();
+                stars.forEach(star => star.classList.remove('active'));
+            } else {
+                alert(result.error);
+            }
+        } catch (error) {
+            console.error('Error submitting feedback:', error);
+            alert('An error occurred. Please try again later.');
+        }
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+        successModal.style.display = 'none'; // Hide the modal
+    });
+
+    // Close modal when clicking outside of it
+    window.addEventListener('click', (e) => {
+        if (e.target === successModal) {
+            successModal.style.display = 'none';
+        }
+    });
+});
+
+
+</script>
+
+<style>
+    .star-rating .fa-star {
+        margin-top: 8px;
+        font-size: 24px;
+        color: #ccc;
+        cursor: pointer;
+        transition: color 0.2s ease-in-out;
+    }
+
+    .star-rating .fa-star.active {
+        color: #ffc107;
+    }
+</style>
+{% endblock %}

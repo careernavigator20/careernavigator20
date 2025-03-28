@@ -1,0 +1,76 @@
+{% extends 'student/stud-base.html' %}
+{% block title %}Student Resources{% endblock %}
+{% block content %}
+<div class="resources-categories">
+    {% for category in categories %}
+    <button class="category-btn {{ 'active' if loop.first else '' }} {{ category }}">
+        {{ category.replace('-', ' ').title() }}
+    </button>
+    {% endfor %}
+</div>
+
+<div class="resources-grid">
+    {% if resources %}
+    {% for resource in resources %}
+    <div class="resource-card {{ resource.category }}" id="resource-card">
+        <div class="resource-type {{ resource.file_type }}">
+            <i class="fas {% if resource.file_type|lower == 'pdf' %}
+            fa-file-pdf
+            {% elif resource.file_type|lower in ['mp4', 'avi', 'mkv', 'video'] %}
+            fa-play-circle
+            {% elif resource.file_type|lower in ['jpeg', 'jpg', 'png'] %}
+            fa-image
+            {% elif resource.file_type|lower in ['mp3', 'wav', 'audio'] %}
+            fa-music
+            {% elif resource.file_type|lower == 'book' %}
+            fa-book
+            {% else %}
+            fa-file
+            {% endif %}" id="resource-icon"></i>
+        </div>
+        
+        <div class="resource-content">
+            <h3>{{ resource.title }}</h3>
+            <p style="margin: 10px 0;">{{ resource.description }}</p>
+            <div class="resource-meta" style="margin-bottom: 20px;display: flex;gap: 20px;">
+                <span><i class="fas fa-file"></i> {{ resource.file_size }}</span>
+                <span><i class="fas fa-download"></i> {{ resource.downloads }}</span>
+            </div>
+            <a href="{{ url_for('download_resource',resource_id=resource.id) }}" style="text-decoration: none;" class="btn btn-primary btn-download" download>Download {{ resource.file_type|title }}</a>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+            <p style="text-align: center;">Resources Are Not Available</p>
+    {% endif %}
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function(){
+        $('.category-btn').click(function() {
+            const category = $(this).attr('class').split(' ').pop();
+            $('.category-btn').removeClass('active');
+            $(this).addClass('active');
+
+            if (category === 'all') {
+                $('.resource-card').show();
+            } else {
+                $('.resource-card').hide();
+                $(`.resource-card.${category}`).show();
+            }
+        });
+    });
+</script>
+
+<script>
+    document.querySelectorAll('.btn-download').forEach(button => {
+        button.addEventListener('click', () => {
+            setTimeout(() => {
+                location.reload();
+            }, 1500); 
+        });
+    });
+</script>
+
+{% endblock %}

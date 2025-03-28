@@ -1,0 +1,54 @@
+<!-- HTML Template (settings.html) -->
+{% extends 'student/stud-base.html' %}
+{% block title %}Student Settings{% endblock %}
+{% block content %}
+<div class="settings-wrapper">
+    <div class="settings-container">
+        <!-- Profile Settings -->
+        <div class="settings-card animate-slide-in" style="--animation-delay: 0.1s;">
+            <h2 class="settings-title">Profile Settings</h2>
+            <form id="profileSettingsForm" class="settings-form">
+                <div class="form-field animate-fade-in" style="--animation-delay: 0.2s;">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" value="John Doe" placeholder="Enter your full name">
+                </div>
+                <div class="form-field animate-fade-in" style="--animation-delay: 0.3s;">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" value="john@example.com" placeholder="Enter your email">
+                </div>
+                <div class="form-field animate-fade-in" style="--animation-delay: 0.4s;">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" value="1234567890" placeholder="Enter your phone number">
+                </div>
+                <button type="submit" class="btn btn-primary btn-save animate-fade-in" style="--animation-delay: 0.5s;">
+                    <span class="btn-text">Save Changes</span>
+                    <i class="fas fa-check btn-icon"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- Password Settings -->
+        <div class="settings-card animate-slide-in" style="--animation-delay: 0.3s;">
+            <h2 class="settings-title">Password Settings</h2>
+            <form id="passwordSettingsForm" class="settings-form">
+                <div class="form-field animate-fade-in" style="--animation-delay: 0.4s;">
+                    <label for="currentPassword">Current Password</label>
+                    <input type="password" id="currentPassword" placeholder="Enter current password">
+                </div>
+                <div class="form-field animate-fade-in" style="--animation-delay: 0.5s;">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword" placeholder="Enter new password">
+                </div>
+                <div class="form-field animate-fade-in" style="--animation-delay: 0.6s;">
+                    <label for="confirmPassword">Confirm New Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm new password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-save animate-fade-in" style="--animation-delay: 0.7s;">
+                    <span class="btn-text">Change Password</span>
+                    <i class="fas fa-lock btn-icon"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

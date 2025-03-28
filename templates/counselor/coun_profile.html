@@ -1,0 +1,158 @@
+{% extends 'counselor/counselor_base.html' %}
+{% block coun_content %}
+    <div class="section-header">
+        <h1>Profile</h1>
+        <button class="btn-primary edit-profile-btn">
+            <i class="fas fa-edit"></i> Edit Profile
+        </button>
+    </div>
+
+    <div class="profile-container">
+        <div class="profile-sidebar">
+            <div class="profile-image-container">
+                <img src="{{ counselor_data.profile_picture if counselor_data.profile_picture else 'https://ui-avatars.com/api/?name=' + session['counselor_name'] | urlencode }}" alt="{{ session['counselor_name'] }}" class="profile-image">
+                <button class="change-photo-btn">
+                    <i class="fas fa-camera"></i>
+                </button>
+            </div>
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <i class="fas fa-calendar-check"></i>
+                    <div class="stat-details">
+                        <span class="stat-value">245</span>
+                        <span class="stat-label">Sessions</span>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-users"></i>
+                    <div class="stat-details">
+                        <span class="stat-value">128</span>
+                        <span class="stat-label">Students</span>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-star"></i>
+                    <div class="stat-details">
+                        <span class="stat-value">4.7</span>
+                        <span class="stat-label">Rating</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="profile-details">
+            <div class="profile-section">
+                <h2>Personal Information</h2>
+                <div class="profile-info-grid">
+                    <div class="profile-info-item">
+                        <label>Full Name</label>
+                        <p>{{ counselor_data.full_name }}</p>
+                    </div>
+                    <div class="profile-info-item">
+                        <label>Email</label>
+                        <p>{{ counselor_data.email }}</p>
+                    </div>
+                    <div class="profile-info-item">
+                        <label>Phone</label>
+                        <p>{{ counselor_data.contact_number }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="profile-section">
+                <h2>Specializations</h2>
+                <div class="specialization-tags">
+                    <span class="tag">{{ counselor_data.specialization }}</span>
+                </div>
+            </div>
+            
+            <div class="profile-section">
+                <h2>Bio</h2>
+                <p class="profile-bio">
+                    {{ counselor_data.bio }}
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="availability-section">
+        <div class="section-header">
+            <h2>Availability</h2>
+            <button class="btn-outline edit-availability-btn">
+                <i class="fas fa-edit"></i> Edit Availability
+            </button>
+        </div>
+        
+        <div class="availability-schedule">
+            <div class="schedule-day">
+                <div class="day-header">Monday</div>
+                <div class="time-slots">
+                    <div class="time-slot available">9:00 AM - 10:00 AM</div>
+                    <div class="time-slot available">10:00 AM - 11:00 AM</div>
+                    <div class="time-slot available">11:00 AM - 12:00 PM</div>
+                    <div class="time-slot">12:00 PM - 1:00 PM</div>
+                    <div class="time-slot available">1:00 PM - 2:00 PM</div>
+                    <div class="time-slot available">2:00 PM - 3:00 PM</div>
+                    <div class="time-slot">3:00 PM - 4:00 PM</div>
+                    <div class="time-slot">4:00 PM - 5:00 PM</div>
+                </div>
+            </div>
+            
+            <div class="schedule-day">
+                <div class="day-header">Tuesday</div>
+                <div class="time-slots">
+                    <div class="time-slot">9:00 AM - 10:00 AM</div>
+                    <div class="time-slot">10:00 AM - 11:00 AM</div>
+                    <div class="time-slot available">11:00 AM - 12:00 PM</div>
+                    <div class="time-slot">12:00 PM - 1:00 PM</div>
+                    <div class="time-slot available">1:00 PM - 2:00 PM</div>
+                    <div class="time-slot available">2:00 PM - 3:00 PM</div>
+                    <div class="time-slot available">3:00 PM - 4:00 PM</div>
+                    <div class="time-slot available">4:00 PM - 5:00 PM</div>
+                </div>
+            </div>
+            
+            <div class="schedule-day">
+                <div class="day-header">Wednesday</div>
+                <div class="time-slots">
+                    <div class="time-slot available">9:00 AM - 10:00 AM</div>
+                    <div class="time-slot available">10:00 AM - 11:00 AM</div>
+                    <div class="time-slot available">11:00 AM - 12:00 PM</div>
+                    <div class="time-slot">12:00 PM - 1:00 PM</div>
+                    <div class="time-slot">1:00 PM - 2:00 PM</div>
+                    <div class="time-slot">2:00 PM - 3:00 PM</div>
+                    <div class="time-slot available">3:00 PM - 4:00 PM</div>
+                    <div class="time-slot available">4:00 PM - 5:00 PM</div>
+                </div>
+            </div>
+            
+            <div class="schedule-day">
+                <div class="day-header">Thursday</div>
+                <div class="time-slots">
+                    <div class="time-slot">9:00 AM - 10:00 AM</div>
+                    <div class="time-slot available">10:00 AM - 11:00 AM</div>
+                    <div class="time-slot available">11:00 AM - 12:00 PM</div>
+                    <div class="time-slot">12:00 PM - 1:00 PM</div>
+                    <div class="time-slot available">1:00 PM - 2:00 PM</div>
+                    <div class="time-slot available">2:00 PM - 3:00 PM</div>
+                    <div class="time-slot available">3:00 PM - 4:00 PM</div>
+                    <div class="time-slot">4:00 PM - 5:00 PM</div>
+                </div>
+            </div>
+            
+            <div class="schedule-day">
+                <div class="day-header">Friday</div>
+                <div class="time-slots">
+                    <div class="time-slot available">9:00 AM - 10:00 AM</div>
+                    <div class="time-slot available">10:00 AM - 11:00 AM</div>
+                    <div class="time-slot">11:00 AM - 12:00 PM</div>
+                    <div class="time-slot">12:00 PM - 1:00 PM</div>
+                    <div class="time-slot available">1:00 PM - 2:00 PM</div>
+                    <div class="time-slot">2:00 PM - 3:00 PM</div>
+                    <div class="time-slot">3:00 PM - 4:00 PM</div>
+                    <div class="time-slot">4:00 PM - 5:00 PM</div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends 'student/stud-base.html' %}
+{% block title %}Student Dashboard{% endblock %}
+{% block content %}
+    <div class="appointments-tabs">
+        <button class="appointment-tab upcoming-btn active" data-tab="upcoming">Upcoming</button>
+        <button class="appointment-tab completed-btn" data-tab="completed">Completed</button>
+        <button class="appointment-tab canceled-btn" data-tab="canceled">Canceled</button>
+    </div>
+
+    <div class="appointments">
+        <!-- Upcoming Appointments -->
+        <div class="appointments-content" id="upcomingAppointments">
+            {% if upcoming_appointments %}
+                {% for appointment in upcoming_appointments %}
+                    <div class="appointment-item">
+                        <div class="appointment-header">
+                            <div class="appointment-title">
+                                <h4>Topic : {{ appointment.purpose }}</h4>
+                                <span class="appointment-date">{{ appointment.date.strftime('%B %d, %Y') }} at {{ appointment.time_slot }}</span>
+                            </div>
+                            <div class="appointment-status upcoming">{{ appointment.student_status }}</div>
+                        </div>
+                        <div class="appointment-body">
+                            <div class="counselor-info">
+                                <div class="counselor-img">
+                                    <img src="{{ url_for('static', filename='img/coun_uploads/' ~ (appointment.counselor.image or 'dummy.jpg')) }}" alt="{{ appointment.counselor.name }}">
+                                </div>
+                                <div style="margin-top: 25px;">
+                                    <h5>{{ appointment.counselor.full_name }}</h5>
+                                    <p>{{ appointment.counselor.specialization }}</p>
+                                </div>
+                            </div>
+                            <div class="appointment-actions" style="margin-top: 15px;">
+                                <button class="btn btn-outline reschedule-btn" data-id="{{ appointment.id }}">Reschedule</button>
+                                <button class="btn btn-danger cancel-btn" data-id="{{ appointment.id }}">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No upcoming appointments.</p>
+            {% endif %}
+        </div>
+
+        <!-- Completed Appointments -->
+        <div class="appointments-content" id="completedAppointments" style="display:none;">
+            {% if completed_appointments %}
+                {% for appointment in completed_appointments %}
+                    <div class="appointment-item">
+                        <div class="appointment-header">
+                            <div class="appointment-title">
+                                <h4>{{ appointment.purpose }}</h4>
+                                <span class="appointment-date">{{ appointment.date.strftime('%B %d, %Y') }} at {{ appointment.time_slot }}</span>
+                            </div>
+                            <div class="appointment-status completed">Completed</div>
+                        </div>
+                        <div class="appointment-body">
+                            <div class="counselor-info">
+                                <div class="counselor-img">
+                                    <img src="{{ url_for('static', filename='img/coun_uploads/' ~ (appointment.counselor.image or 'dummy.jpg')) }}" alt="{{ appointment.counselor.name }}">
+                                </div>
+                                <div style="margin-top: 25px;">
+                                    <h5>{{ appointment.counselor.name }}</h5>
+                                    <p>{{ appointment.counselor.specialization }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No completed appointments.</p>
+            {% endif %}
+        </div>
+
+        <!-- Canceled Appointments -->
+        <div class="appointments-content" id="canceledAppointments" style="display:none;">
+            {% if canceled_appointments %}
+                {% for appointment in canceled_appointments %}
+                    <div class="appointment-item">
+                        <div class="appointment-header">
+                            <div class="appointment-title">
+                                <h4>{{ appointment.purpose }}</h4>
+                                <span class="appointment-date">{{ appointment.date.strftime('%B %d, %Y') }} at {{ appointment.time_slot }}</span>
+                            </div>
+                            <div class="appointment-status canceled">Canceled</div>
+                        </div>
+                        <div class="appointment-body">
+                            <div class="counselor-info">
+                                <div class="counselor-img">
+                                    <img src="{{ url_for('static', filename='img/coun_uploads/' ~ (appointment.counselor.image or 'dummy.jpg')) }}" alt="{{ appointment.counselor.name }}">
+                                </div>
+                                <div style="margin-top: 25px;">
+                                    <h5>{{ appointment.counselor.name }}</h5>
+                                    <p>{{ appointment.counselor.specialization }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No canceled appointments.</p>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.appointment-tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+        document.querySelectorAll('.appointment-tab').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+
+        const tabId = this.dataset.tab;
+        document.querySelectorAll('.appointments-content').forEach(content => {
+            content.style.display = content.id === `${tabId}Appointments` ? 'block' : 'none';
+        });
+    });
+});
+
+    </script>
+{% endblock %}

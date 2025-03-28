@@ -1,0 +1,164 @@
+{% extends 'student/stud-base.html' %}
+{% block title %}Student Dashboard{% endblock %}
+{% block content %}
+<div class="dashboard-content">
+    <div class="welcome-section">
+        <h1>Welcome back, {{ session['student_name'] }}</h1>
+        <p>Here's what's happening with your career journey</p>
+    </div>
+
+    <!-- Overview Cards -->
+    <div class="overview-cards">
+        <div class="card profile-completion">
+            <div class="card-header">
+                <h3>Profile Completion</h3>
+                <i class="fas fa-user-check"></i>
+            </div>
+            <div class="card-content">
+                <div class="progress-circle" data-progress="75">
+                    <span class="progress-number">75%</span>
+                </div>
+                <p>Complete your profile to get better matches</p>
+                <button class="btn-primary">Complete Profile</button>
+            </div>
+        </div>
+
+        <div class="card next-appointment">
+            <div class="card-header">
+                <h3>Next Appointment</h3>
+                <i class="fas fa-calendar"></i>
+            </div>
+            <div class="card-content">
+                <div class="appointment-info">
+                    <h4>Career Planning Session</h4>
+                    <p><i class="fas fa-user"></i> Dr. Sarah Smith</p>
+                    <p><i class="fas fa-clock"></i> Tomorrow, 2:00 PM</p>
+                </div>
+                <div class="appointment-actions">
+                    <button class="btn-secondary">Reschedule</button>
+                    <button class="btn-outline">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card career-progress">
+            <div class="card-header">
+                <h3>Career Interests</h3>
+                <i class="fas fa-chart-pie"></i>
+            </div>
+            <div class="card-content">
+                <canvas id="interestsChart"></canvas>
+                <div class="chart-legend">
+                    <div class="legend-item">
+                        <span class="legend-color" style="background: #4F46E5"></span>
+                        <span>Technology</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color" style="background: #10B981"></span>
+                        <span>Business</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color" style="background: #F59E0B"></span>
+                        <span>Design</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recommended Counselors -->
+    <section class="recommended-counselors">
+        <div class="section-header">
+            <h2>Recommended Counselors</h2>
+            <a href="{{ url_for('find_counselors') }}" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="counselor-cards">
+            <div class="counselor-card">
+                <img src="https://via.placeholder.com/100" alt="Dr. Sarah Smith" class="counselor-img">
+                <div class="counselor-info">
+                    <h3>Dr. Sarah Smith</h3>
+                    <p class="specialization">Career Development Specialist</p>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span>4.5 (128)</span>
+                    </div>
+                    <button class="btn-primary">Book Appointment</button>
+                </div>
+            </div>
+
+            <div class="counselor-card">
+                <img src="https://via.placeholder.com/100" alt="Dr. John Davis" class="counselor-img">
+                <div class="counselor-info">
+                    <h3>Dr. John Davis</h3>
+                    <p class="specialization">Technology Career Expert</p>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <span>4.0 (95)</span>
+                    </div>
+                    <button class="btn-primary">Book Appointment</button>
+                </div>
+            </div>
+
+            <div class="counselor-card">
+                <img src="https://via.placeholder.com/100" alt="Dr. Emily Chen" class="counselor-img">
+                <div class="counselor-info">
+                    <h3>Dr. Emily Chen</h3>
+                    <p class="specialization">Business Career Consultant</p>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span>5.0 (156)</span>
+                    </div>
+                    <button class="btn-primary">Book Appointment</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Resources -->
+    <section class="recent-resources">
+        <div class="section-header">
+            <h2>Recent Resources</h2>
+            <a href="{{ url_for('resources') }}" class="view-all">Browse Library <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="resource-cards">
+            {% for resource in recent_resources %}
+            <div class="resource-card">
+                <div class="resource-icon">
+                    {% if resource.file_type.lower() == 'pdf' %}
+                    <i class="fas fa-file-pdf"></i>
+                    {% elif resource.file_type.lower() in ['mp4', 'video', 'avi', 'mkv'] %}
+                    <i class="fas fa-play-circle"></i>
+                    {% elif resource.file_type.lower() in ['book', 'ebook', 'epub'] %}
+                    <i class="fas fa-book"></i>
+                    {% elif resource.file_type.lower() in ['image', 'jpg', 'jpeg', 'png', 'gif'] %}
+                    <i class="fas fa-image"></i>
+                    {% else %}
+                    <i class="fas fa-file"></i>
+                    {% endif %}
+                </div>
+                <div class="resource-info">
+                    <h3>{{ resource.title }}</h3>
+                    <p>{{ resource.description }}</p>
+                    <a href="{{ url_for('download_resource',resource_id=resource.id) }}" class="btn-secondary" download="{{ resource.title }}">Download {{ resource.file_type }}</a>
+                </div>
+            </div>
+            <br>
+            {% endfor %}
+        </div>
+    </section>
+    
+    
+</div>
+{% endblock %}

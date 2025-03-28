@@ -1,0 +1,244 @@
+{% extends 'counselor/counselor_base.html' %}
+{% block coun_content %}
+    <div class="section-header">
+        <h1>Manage Appointments</h1>
+    </div>
+    
+    <div class="filter-container">
+        <div class="filter-group">
+            <label for="appointment-status">Status:</label>
+            <select id="appointment-status" class="filter-select">
+                <option value="all">All</option>
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                <option value="completed">Completed</option>
+            </select>
+        </div>
+        
+        <div class="filter-group">
+            <label for="appointment-search">Search:</label>
+            <div class="search-input">
+                <input type="text" id="appointment-search" placeholder="Search by student name">
+                <i class="fas fa-search"></i>
+            </div>
+        </div>
+        
+        <div class="view-toggle">
+            <button class="view-btn active" data-view="table">
+                <i class="fas fa-list"></i> Table View
+            </button>
+            <button class="view-btn" data-view="calendar">
+                <i class="fas fa-calendar"></i> Calendar View
+            </button>
+        </div>
+    </div>
+    
+    <!-- Table View -->
+    <div class="view-container" id="table-view">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Date & Time</th>
+                    <th>Student Name</th>
+                    <th>Topic</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for appointment in appointments %}
+                <tr data-appointment-id="{{ appointment.id }}">
+                    <td>{{ appointment.date_time }}</td>
+                    <td>{{ appointment.student_name }}</td>
+                    <td>{{ appointment.topic }}</td>
+                    <td>
+                        <span class="status-badge {{ appointment.counselor_status | lower }}">
+                            {{ appointment.counselor_status.capitalize() }}
+                        </span>
+                    </td>
+                    <td class="action-cell">
+                        {% if appointment.counselor_status == 'Pending' %}
+                            <button class="action-icon approve" title="Approve">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            <button class="action-icon reject" title="Reject">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            <button class="action-icon reschedule" title="Reschedule">
+                                <i class="fas fa-clock"></i>
+                            </button>
+                        {% elif appointment.counselor_status == 'Approved' %}
+                            <button class="action-icon view" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-icon reschedule" title="Reschedule">
+                                <i class="fas fa-clock"></i>
+                            </button>
+                            <button class="action-icon cancel" title="Cancel">
+                                <i class="fas fa-ban"></i>
+                            </button>
+                        {% elif appointment.counselor_status == 'Rejected' %}
+                            <button class="action-icon view" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-icon reschedule" title="Reschedule">
+                                <i class="fas fa-clock"></i>
+                            </button>
+                        {% elif appointment.counselor_status == 'Canceled' %}
+                            <button class="action-icon view" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-icon reschedule" title="Reschedule">
+                                <i class="fas fa-clock"></i>
+                            </button>
+                        {% elif appointment.counselor_status == 'Completed' %}
+                            <button class="action-icon view" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-icon feedback" title="Add Feedback">
+                                <i class="fas fa-comment"></i>
+                            </button>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    
+    <!-- Calendar View -->
+    <div class="view-container calendar-container" id="calendar-view" style="display: none;">
+        <div class="calendar-header">
+            <button id="prev-month"><i class="fas fa-chevron-left"></i></button>
+            <h2 id="calendar-title">March 2025</h2>
+            <button id="next-month"><i class="fas fa-chevron-right"></i></button>
+        </div>
+        <div class="calendar-grid">
+            <div class="calendar-days">
+                <div>Sun</div>
+                <div>Mon</div>
+                <div>Tue</div>
+                <div>Wed</div>
+                <div>Thu</div>
+                <div>Fri</div>
+                <div>Sat</div>
+            </div>
+            <div class="calendar-dates" id="calendar-dates">
+                <!-- Calendar dates will be generated by JavaScript -->
+            </div>
+        </div>
+        <div class="calendar-legend">
+            <div class="legend-item">
+                <span class="legend-color pending"></span>
+                <span>Pending</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color approved"></span>
+                <span>Approved</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color completed"></span>
+                <span>Completed</span>
+            </div>
+        </div>
+    </div>
+
+<script>
+   document.addEventListener('click', function (event) {
+    if (event.target.closest('.action-icon.approve')) {
+    
+        const row = event.target.closest('tr');
+        const appointmentId = row ? row.getAttribute('data-appointment-id') : null;
+
+        if (appointmentId) {
+            
+            fetch(`/approve_appointment/${appointmentId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        alert('Appointment approved successfully.');
+                        location.reload(); 
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('An error occurred while approving the appointment.');
+                });
+        } else {
+            alert('Invalid appointment ID.');
+        }
+    }
+
+    if (event.target.closest('.action-icon.reject')) {
+        const row = event.target.closest('tr');
+        const appointmentId = row ? row.getAttribute('data-appointment-id') : null;
+
+        if (appointmentId) {
+            fetch(`/reject_appointment/${appointmentId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        alert('Appointment rejected successfully.');
+                        location.reload(); 
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('An error occurred while rejecting the appointment.');
+                });
+        } else {
+            alert('Invalid appointment ID.');
+        }
+    }
+
+    if (event.target.closest('.action-icon.cancel')) {
+        const row = event.target.closest('tr');
+        const appointmentId = row ? row.getAttribute('data-appointment-id') : null;
+
+        if (appointmentId) {
+            const confirmCancel = confirm('Are you sure you want to cancel this appointment?');
+
+            if (confirmCancel) {
+                fetch(`/cancel_appointment/${appointmentId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.success) {
+                            alert('Appointment canceled successfully.');
+                            location.reload(); 
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        alert('An error occurred while canceling the appointment.');
+                    });
+            }
+        } else {
+            alert('Invalid appointment ID.');
+        }
+    }
+
+});
+</script>
+{% endblock %}

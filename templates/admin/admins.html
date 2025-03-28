@@ -1,0 +1,90 @@
+{% extends 'admin/base.html' %}
+{% block title %}Admins - Admin Panel{% endblock %}
+{% block content %}
+    <h2 class="section-title">Manage Admins</h2>
+
+    <div class="table-actions">
+        <div class="search-filters">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search admins...">
+            </div>
+            <select class="filter-select">
+                <option value="">All Roles</option>
+                <option value="super">Super Admin</option>
+                <option value="content">Content Admin</option>
+                <option value="user">User Admin</option>
+            </select>
+        </div>
+        <button class="add-btn" data-modal="addAdminModal">
+            <i class="fas fa-plus"></i> Add Admin
+        </button>
+    </div>
+
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Last Login</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="user-info">
+                            <img src="https://ui-avatars.com/api/?name=Admin+User" alt="Admin User">
+                            <span>Admin User</span>
+                        </div>
+                    </td>
+                    <td>admin@example.com</td>
+                    <td>Super Admin</td>
+                    <td>Today, 9:30 AM</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="edit-btn"><i class="fas fa-edit"></i></button>
+                            <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="user-info">
+                            <img src="https://ui-avatars.com/api/?name=Content+Manager" alt="Content Manager">
+                            <span>Content Manager</span>
+                        </div>
+                    </td>
+                    <td>content@example.com</td>
+                    <td>Content Admin</td>
+                    <td>Yesterday, 3:15 PM</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="edit-btn"><i class="fas fa-edit"></i></button>
+                            <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="user-info">
+                            <img src="https://ui-avatars.com/api/?name=User+Manager" alt="User Manager">
+                            <span>User Manager</span>
+                        </div>
+                    </td>
+                    <td>user@example.com</td>
+                    <td>User Admin</td>
+                    <td>Feb 20, 2024</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="edit-btn"><i class="fas fa-edit"></i></button>
+                            <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
